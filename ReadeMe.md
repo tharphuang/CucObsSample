@@ -105,3 +105,4 @@ var response = await client.DeleteBucketAsync(request);
 ```
 ## 5. 其它
 示例项目中只是给出了sdk中几个较为常用的方法，其它方法的是使用可以参考aws s3的官方文档
+
