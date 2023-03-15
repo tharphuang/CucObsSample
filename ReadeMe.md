@@ -14,10 +14,6 @@ cuc obs是[联通云](https://www.cucloud.cn/product/oss.html)对外提供的一
 ```
 mkdir dotnet
 cd dotnet 
-
-dotnet new sln
-dotnet new console --output ./cucsample
-dotnet sln add ./cucsample 
 ```
 ## 2. 添加sdk
 ```
