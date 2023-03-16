@@ -117,13 +117,41 @@ namespace cuc.obs.sample
             }
         }
 
+        //download object from bucket
+        public static async Task GetObject(AmazonS3Client client, string bucketName, string key)
+        {
+            string filePath = Directory.GetCurrentDirectory() + "/load/" + key;
+            try
+            {
+                var request = new GetObjectRequest
+                {
+                    BucketName = bucketName,
+                    Key = key
+                };
+                var response = await client.GetObjectAsync(request);
+                if (response.HttpStatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    await response.WriteResponseStreamToFileAsync($"{filePath}", true, CancellationToken.None);
+                    Console.WriteLine($"\t Successfully download object: {key}.");
+                }
+                else
+                {
+                    Console.WriteLine("\t Cloud not download objet ");
+                }
+            }
+            catch (AmazonS3Exception e)
+            {
+                Console.WriteLine($"Error download object failed.Message:{e.Message}");
+            }
+        }
+
         // delete objet from bucket
         public static async Task DeleteObject(AmazonS3Client client, string bucketName, string key)
         {
             try
             {
                 var response = await client.DeleteObjectAsync(bucketName, key);
-                Console.WriteLine("\t successfully delete object: {key}");
+                Console.WriteLine($"\t Successfully delete object: {key}");
             }
             catch (AmazonS3Exception e)
             {
@@ -172,10 +200,13 @@ namespace cuc.obs.sample
             Console.WriteLine("-->: 4.list object from bucket ");
             await ListObjects(client, "newbucket");
 
-            Console.WriteLine("-->: 5.delete object from bucket ");
+            Console.WriteLine("-->: 5.download object from bucket");
+            await GetObject(client, "newbucket", "Program.cs");
+
+            Console.WriteLine("-->: 6.delete object from bucket ");
             await DeleteObject(client, "newbucket", "Program.cs");
 
-            Console.WriteLine("-->: 6. delete bucket ");
+            Console.WriteLine("-->: 7.delete bucket ");
             await DeleteBucket(client, "newbucket");
         }
     }
