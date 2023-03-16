@@ -22,7 +22,7 @@ dotnet add package Amazon.S3
 dotnet add package AWSSDK.Core
 ```
 ## 3. 快速使用
-链接对象存储服务
+连接对象存储服务
 ```C#
 AmazonS3Config conf = new AmazonS3Config
 {
@@ -70,6 +70,16 @@ do
 }
 while (response.IsTruncated);
 ```
+从存储桶中下载对象
+```C#
+var request = new GetObjectRequest
+{
+    BucketName = bucketName,
+    Key = key
+};
+var response = await client.GetObjectAsync(request);
+await response.WriteResponseStreamToFileAsync($"{filePath}", true, CancellationToken.None);
+```
 删除存储桶中的对象
 ```C#
 var response = await client.DeleteObjectAsync(bucketName,key);
@@ -83,7 +93,7 @@ var request = new DeleteBucketRequest
 var response = await client.DeleteBucketAsync(request);
 ```
 ## 4. 示例代码运行结果
-```shell
+```
 [root]_ ~/CucObsSample/dotnet>: dotnet run
 ##### cuc sdk for .net samples #####
 -->: 1.create bucket 
@@ -93,10 +103,12 @@ var response = await client.DeleteBucketAsync(request);
 -->: 3.upload object 
          Successfully upload Program.cs to newbucket
 -->: 4.list object from bucket 
-         object: Program.cs, Size:6510
--->: 5.delete object from bucket 
-         successfully delete object: {key}
--->: 6. delete bucket 
+         object: Program.cs, Size:7856
+-->: 5.download object from bucket
+         Successfully download object: Program.cs.
+-->: 6.delete object from bucket 
+         Successfully delete object: Program.cs
+-->: 7.delete bucket 
          Successfully delete bucket: newbucket
 ```
 ## 5. 其它
