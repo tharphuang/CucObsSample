@@ -1,3 +1,4 @@
 .vscode
 dotnet/bin
 dotnet/obj
+ios/Pods
