@@ -12,7 +12,7 @@ namespace cuc.obs.sample
         // please change this special value to your real secret key 
         public static string SecretKey = "sk";
         // cuc obs endpoint .example: http://obs-lf.cucloud.cn
-        public static string Endpoint = "http://endpoint";
+        public static string Endpoint = "http://obs-gzgy2.cucloud.cn";
         // bucket name
         public static string Bucket = "newBucket";
 
@@ -92,6 +92,33 @@ namespace cuc.obs.sample
                 Console.WriteLine($"Error create objet. Message:'{e.Message}'. ");
             }
         }
+        
+        // copy object
+        public static async Task CopyObject(AmazonS3Client client, string bucketName)
+        {
+            var request = new CopyObjectRequest
+            {
+                SourceBucket = bucketName,
+                SourceKey = "/Program.cs", // 注意这里的'/'
+                DestinationBucket = bucketName,
+                DestinationKey = "/Program2.cs",
+            };
+            try
+            {
+                var result = await client.CopyObjectAsync(request);
+                Console.WriteLine($"\t Unexpected Status Code: {result}");
+            }
+            catch (AmazonS3Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
 
         // list object from bucket
         public static async Task ListObjects(AmazonS3Client client, string bucket)
@@ -120,7 +147,7 @@ namespace cuc.obs.sample
         //download object from bucket
         public static async Task GetObject(AmazonS3Client client, string bucketName, string key)
         {
-            string filePath = Directory.GetCurrentDirectory() + "/load/" + key;
+            string filePath = Directory.GetCurrentDirectory() + "/load/" + key + "xx";
             try
             {
                 var request = new GetObjectRequest
@@ -197,14 +224,18 @@ namespace cuc.obs.sample
             Console.WriteLine("-->: 3.upload object ");
             await UploadObject(client, "newbucket");
 
+            Console.WriteLine("-->: 4.copy object ");
+            await CopyObject(client, "newbucket");
+
             Console.WriteLine("-->: 4.list object from bucket ");
             await ListObjects(client, "newbucket");
 
-            Console.WriteLine("-->: 5.download object from bucket");
-            await GetObject(client, "newbucket", "Program.cs");
+            Console.WriteLine("-->: 5.download object from bucket (download into ./load)");
+            await GetObject(client, "newbucket", "Program.cs"); // 测试完成，记得删除本地的load文件夹
 
             Console.WriteLine("-->: 6.delete object from bucket ");
             await DeleteObject(client, "newbucket", "Program.cs");
+            await DeleteObject(client, "newbucket", "Program2.cs");
 
             Console.WriteLine("-->: 7.delete bucket ");
             await DeleteBucket(client, "newbucket");
