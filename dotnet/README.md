@@ -102,13 +102,17 @@ var response = await client.DeleteBucketAsync(request);
          bucket: newbucket
 -->: 3.upload object 
          Successfully upload Program.cs to newbucket
--->: 4.list object from bucket 
-         object: Program.cs, Size:7856
--->: 5.download object from bucket
+-->: 4.copy object 
+         Unexpected Status Code: Amazon.S3.Model.CopyObjectResponse
+-->: 5.list object from bucket 
+         object: Program.cs, Size:8685
+         object: Program2.cs, Size:8685
+-->: 6.download object from bucket
          Successfully download object: Program.cs.
--->: 6.delete object from bucket 
+-->: 7.delete object from bucket 
          Successfully delete object: Program.cs
--->: 7.delete bucket 
+         Successfully delete object: Program2.cs
+-->: 8.delete bucket 
          Successfully delete bucket: newbucket
 ```
 ## 5. 其它

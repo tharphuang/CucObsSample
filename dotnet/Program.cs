@@ -12,7 +12,7 @@ namespace cuc.obs.sample
         // please change this special value to your real secret key 
         public static string SecretKey = "sk";
         // cuc obs endpoint .example: http://obs-lf.cucloud.cn
-        public static string Endpoint = "http://obs-gzgy2.cucloud.cn";
+        public static string Endpoint = "http://endpoint";
         // bucket name
         public static string Bucket = "newBucket";
 
@@ -227,17 +227,17 @@ namespace cuc.obs.sample
             Console.WriteLine("-->: 4.copy object ");
             await CopyObject(client, "newbucket");
 
-            Console.WriteLine("-->: 4.list object from bucket ");
+            Console.WriteLine("-->: 5.list object from bucket ");
             await ListObjects(client, "newbucket");
 
-            Console.WriteLine("-->: 5.download object from bucket (download into ./load)");
+            Console.WriteLine("-->: 6.download object from bucket (download into ./load)");
             await GetObject(client, "newbucket", "Program.cs"); // 测试完成，记得删除本地的load文件夹
 
-            Console.WriteLine("-->: 6.delete object from bucket ");
+            Console.WriteLine("-->: 7.delete object from bucket ");
             await DeleteObject(client, "newbucket", "Program.cs");
             await DeleteObject(client, "newbucket", "Program2.cs");
 
-            Console.WriteLine("-->: 7.delete bucket ");
+            Console.WriteLine("-->: 8.delete bucket ");
             await DeleteBucket(client, "newbucket");
         }
     }
